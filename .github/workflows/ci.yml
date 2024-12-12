@@ -1,8 +1,9 @@
-name: CI with Artifact
+name: Python application with CD
 
 on:
   push:
-    branches: [ main ]
+    branches:
+      - main
 
 jobs:
   build:
@@ -13,13 +14,21 @@ jobs:
     - name: Set up Python
       uses: actions/setup-python@v4
       with:
-        python-version: '3.9'
+        python-version: '3.8'
     - name: Install dependencies
-      run: pip install -r requirements.txt
-    - name: Test with unittest
-      run: python -m unittest discover
-    - name: Create artifact
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+    - name: Run tests
+      run: |
+        python -m unittest discover 
+    - name: Package project
+      run: |
+        mkdir -p dist
+        zip -r dist/calculadora.zip . 
+    - name: Upload artifact
       uses: actions/upload-artifact@v3
       with:
-        name: passgenerator
-        path: passgenerator.zip
+        name: calculadora-artifact
+        path: dist/calculadora.zip
+        
