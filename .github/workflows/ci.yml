@@ -1,9 +1,7 @@
-name: CI
+name: CI with Artifact
 
 on:
   push:
-    branches: [ main ]
-  pull_request:
     branches: [ main ]
 
 jobs:
@@ -20,3 +18,8 @@ jobs:
       run: pip install -r requirements.txt
     - name: Test with unittest
       run: python -m unittest discover
+    - name: Create artifact
+      uses: actions/upload-artifact@v3
+      with:
+        name: passgenerator
+        path: passgenerator.zip
